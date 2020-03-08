@@ -3,7 +3,7 @@ extends Spatial
 class_name main_game
 
 onready var cube = load("res://scenes/cube.tscn")
-onready var projectile = load("res://scenes/projectile.tscn")
+onready var projectile_scene = load("res://scenes/projectile.tscn")
 onready var combo_value_text_box := $GUI/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/combo_value as RichTextLabel
 onready var hit_scale_curve := load("res://misc/hit_scale_curve.tres") as Curve
 
@@ -104,7 +104,7 @@ func resize_projectiles_array(new_size: int):
 	projectiles_used.resize(new_size)
 	assert(new_size > old_size)
 	for i in range(old_size, new_size):
-		var new_projectile = projectile.instance()
+		var new_projectile = projectile_scene.instance()
 		new_projectile.transform.origin = Vector3(9999,9999,9999)
 		add_child(new_projectile)
 		projectiles[i] = new_projectile

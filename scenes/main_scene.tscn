@@ -66,12 +66,12 @@ rect_min_size = Vector2( 20, 0 )
 [node name="MarginContainer2" type="MarginContainer" parent="GUI/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 24.0
 margin_right = 94.0
-margin_bottom = 30.0
+margin_bottom = 100.0
 rect_min_size = Vector2( 70, 30 )
 
 [node name="combo_value" type="RichTextLabel" parent="GUI/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2"]
 margin_right = 70.0
-margin_bottom = 30.0
+margin_bottom = 100.0
 rect_min_size = Vector2( 70, 30 )
 rect_pivot_offset = Vector2( 35, 15 )
 theme = ExtResource( 2 )
