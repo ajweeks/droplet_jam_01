@@ -20,7 +20,7 @@ func _process(delta):
 
 func _on_RigidBody_body_entered(body):
 	var cube := body as cube_collider
-	game.onProjectileHit(cube.axis, cube.index)
+	game.onProjectileHit(self, cube.axis, cube.index)
 
 func set_color(inColor):
 	color = inColor

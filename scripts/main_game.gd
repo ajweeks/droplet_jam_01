@@ -108,5 +108,6 @@ func next_projectile():
 	projectiles_used[next_index] = true
 	return projectiles[next_index]
 
-func onProjectileHit(axis: int, index: int):
-	cube_inst.lightFace(axis, index)
+func onProjectileHit(projectile, axis: int, index: int):
+	var correct = projectile.color == axis
+	cube_inst.lightFace(axis, index, correct)

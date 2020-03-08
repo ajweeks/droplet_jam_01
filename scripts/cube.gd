@@ -5,10 +5,23 @@ var rot_speed := 20.0
 
 var rotations_queue : Array
 
+var face_timers : Array
+var face_misses : Array
+
 var zero_rot_thresh = 0.1
 var fade_speed = 10.0
+var blink_brightness = 1.0
+var miss_blink_speed = 10.0
+var miss_blink_duration = 0.6
+var hit_blink_duration = 0.3
 
 func _ready():
+	face_timers.resize(6)
+	face_misses.resize(6)
+	for i in range(6):
+		face_timers[i] = -1.0
+		face_misses[i] = false
+	
 	for i in range(6):
 		var mesh = get_child(i) as CSGMesh
 		mesh.material_override = SpatialMaterial.new()
@@ -29,8 +42,16 @@ func _process(delta):
 	for i in range(6):
 		var mesh := get_child(i) as CSGMesh
 		var mat := mesh.material_override as SpatialMaterial
-		if mat.emission_energy > 0.0:
-			mat.emission_energy = lerp(mat.emission_energy, 0.0, clamp(delta*fade_speed, 0.0, 1.0));
+		if face_timers[i] != -1.0:
+			if face_misses[i]:
+				mat.emission_energy = (sin(face_timers[i]*miss_blink_speed)*0.5+0.5) * blink_brightness
+			else:
+				mat.emission_energy = lerp(mat.emission_energy, 0.0, clamp(delta*fade_speed, 0.0, 1.0));
+			
+			face_timers[i] = face_timers[i] - delta
+			if face_timers[i] <= 0.0:
+				face_timers[i] = -1.0
+				mat.emission_energy = 0.0;
 
 
 func _input(event):
@@ -90,7 +111,15 @@ func rotate(axis: Vector3, amount: float):
 	else:
 		rotations_queue.push_back(delta_rot)
 
-func lightFace(axis: int, index: int):
-	var mesh := get_child(axis * 2 + index) as CSGMesh
+func lightFace(axis: int, index: int, correct: bool):
+	var face_idx = axis * 2 + index
+	face_timers[face_idx] = hit_blink_duration if correct else miss_blink_duration
+	face_misses[face_idx] = not correct
+	var mesh := get_child(face_idx) as CSGMesh
 	var mat := mesh.material_override as SpatialMaterial
-	mat.emission_energy = 1.0
+	if correct:
+		mat.emission = Color.white
+		mat.emission_energy = 1.0
+	else:
+		mat.emission = Color("#ff7373")
+		mat.emission_energy = blink_brightness
