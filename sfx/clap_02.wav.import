@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/clap_02.wav-daf4078ca81f870e8eabda9c38773f8d.sample"
+
+[deps]
+
+source_file="res://sfx/clap_02.wav"
+dest_files=[ "res://.import/clap_02.wav-daf4078ca81f870e8eabda9c38773f8d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

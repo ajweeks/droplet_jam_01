@@ -6,6 +6,7 @@ onready var cube = load("res://scenes/cube.tscn")
 onready var projectile_scene = load("res://scenes/projectile.tscn")
 onready var combo_value_text_box := $GUI/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/combo_value as RichTextLabel
 onready var hit_scale_curve := load("res://misc/hit_scale_curve.tres") as Curve
+onready var audio_manager := $Audio as AudioManager
 
 var cube_inst
 
@@ -128,8 +129,10 @@ func onProjectileHit(projectile, axis: int, index: int):
 	
 	if correct:
 		combo += 1
+		audio_manager.play("bass")
 	else:
 		combo = 0
+		audio_manager.play("scratch")
 	
 	combo_value_text_box.text = str(combo) + 'x'
 	time_since_hit = 0.0

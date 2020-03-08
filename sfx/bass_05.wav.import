@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bass_05.wav-0a89f18d4e8f9af76d12aac5ac071df5.sample"
+
+[deps]
+
+source_file="res://sfx/bass_05.wav"
+dest_files=[ "res://.import/bass_05.wav-0a89f18d4e8f9af76d12aac5ac071df5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "AudioManager",
+"language": "GDScript",
+"path": "res://scripts/AudioManager.gd"
+}, {
 "base": "RigidBody",
 "class": "cube_collider",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://scripts/main_game.gd"
 } ]
 _global_script_class_icons={
+"AudioManager": "",
 "cube_collider": "",
 "main_game": ""
 }
