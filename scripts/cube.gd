@@ -6,6 +6,46 @@ var rot_speed := 20.0
 var rotations_queue : Array
 
 var zero_rot_thresh = 0.1
+var fade_speed = 10.0
+
+func _ready():
+	for i in range(6):
+		var mesh = get_child(i) as CSGMesh
+		mesh.material_override = SpatialMaterial.new()
+		mesh.material_override.albedo_color = mesh.material.albedo_color
+		mesh.material_override.emission = Color.white
+		mesh.material_override.emission_enabled = true
+		mesh.material_override.emission_energy = 0.0
+
+func _process(delta):
+	transform.basis = Quat(transform.basis).slerp(target_rot, delta*rot_speed);
+
+	if at_zero():
+		snap_to_nearest_zero()
+		
+		if not rotations_queue.empty():
+			target_rot = rotations_queue.pop_front() * transform.basis.get_rotation_quat();
+	
+	for i in range(6):
+		var mesh := get_child(i) as CSGMesh
+		var mat := mesh.material_override as SpatialMaterial
+		if mat.emission_energy > 0.0:
+			mat.emission_energy = lerp(mat.emission_energy, 0.0, clamp(delta*fade_speed, 0.0, 1.0));
+
+
+func _input(event):
+	if event.is_action_pressed("rotate_x_pos"):
+		rotate(Vector3.RIGHT, -1.0);
+	if event.is_action_pressed("rotate_x_neg"):
+		rotate(Vector3.RIGHT, 1.0);
+	if event.is_action_pressed("rotate_y_pos"):
+		rotate(Vector3.UP, -1.0);
+	if event.is_action_pressed("rotate_y_neg"):
+		rotate(Vector3.UP, 1.0);
+	if event.is_action_pressed("rotate_z_pos"):
+		rotate(Vector3.FORWARD, -1.0);
+	if event.is_action_pressed("rotate_z_neg"):
+		rotate(Vector3.FORWARD, 1.0);
 
 func at_zero():
 	var axis_rotations : Vector3 = transform.basis.get_euler()
@@ -43,15 +83,6 @@ func snap_to_nearest_zero():
 
 	transform.basis = Quat(new_euler_angles)
 
-func _process(delta):
-	transform.basis = Quat(transform.basis).slerp(target_rot, delta*rot_speed);
-
-	if at_zero():
-		snap_to_nearest_zero()
-		
-		if not rotations_queue.empty():
-			target_rot = rotations_queue.pop_front() * transform.basis.get_rotation_quat();
-
 func rotate(axis: Vector3, amount: float):
 	var delta_rot = Quat(axis, amount * (PI/2.0))
 	if at_zero() and rotations_queue.empty():
@@ -59,16 +90,7 @@ func rotate(axis: Vector3, amount: float):
 	else:
 		rotations_queue.push_back(delta_rot)
 
-func _input(event):
-	if event.is_action_pressed("rotate_x_pos"):
-		rotate(Vector3.RIGHT, -1.0);
-	if event.is_action_pressed("rotate_x_neg"):
-		rotate(Vector3.RIGHT, 1.0);
-	if event.is_action_pressed("rotate_y_pos"):
-		rotate(Vector3.UP, -1.0);
-	if event.is_action_pressed("rotate_y_neg"):
-		rotate(Vector3.UP, 1.0);
-	if event.is_action_pressed("rotate_z_pos"):
-		rotate(Vector3.FORWARD, -1.0);
-	if event.is_action_pressed("rotate_z_neg"):
-		rotate(Vector3.FORWARD, 1.0);
+func lightFace(axis: int, index: int):
+	var mesh := get_child(axis * 2 + index) as CSGMesh
+	var mat := mesh.material_override as SpatialMaterial
+	mat.emission_energy = 1.0

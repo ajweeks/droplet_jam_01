@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "RigidBody",
+"class": "cube_collider",
+"language": "GDScript",
+"path": "res://scripts/cube_collider.gd"
+}, {
+"base": "Spatial",
+"class": "main_game",
+"language": "GDScript",
+"path": "res://scripts/main_game.gd"
+} ]
 _global_script_class_icons={
-
+"cube_collider": "",
+"main_game": ""
 }
 
 [application]
@@ -103,6 +114,11 @@ rotate_y_neg={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[layer_names]
+
+3d_physics/layer_1="projectiles"
+3d_physics/layer_2="cube"
 
 [rendering]
 
