@@ -4,7 +4,8 @@ var move_speed := 3.0
 var color := -1 # 0, 1, 2 => r, g, b
 
 onready var mesh := $projectile_mesh as CSGMesh
-onready var game := get_tree().get_current_scene() as main_game
+onready var game := get_tree().get_current_scene()
+onready var rb = $projectile_rb as RigidBody
 
 var red =   Color("#c02929")
 var green = Color("#258c2c")
@@ -13,6 +14,8 @@ var blue =  Color("#1510b3")
 func _ready():
 	mesh.material_override = SpatialMaterial.new()
 	mesh.material_override.roughness = 0.0
+	mesh.material_override.emission_energy = 1.0
+	mesh.material_override.emission_enabled = true
 	set_color(0)
 
 func _process(delta):
@@ -29,7 +32,13 @@ func set_color(inColor):
 		return
 	color = inColor
 	match inColor:
-		0: mesh.material_override.albedo_color = red;
-		1: mesh.material_override.albedo_color = green;
-		2: mesh.material_override.albedo_color = blue;
+		0:
+			mesh.material_override.albedo_color = red;
+			mesh.material_override.emission = red;
+		1:
+			mesh.material_override.albedo_color = green;
+			mesh.material_override.emission = green;
+		2:
+			mesh.material_override.albedo_color = blue;
+			mesh.material_override.emission = blue;
 		_: printerr("invalid color")

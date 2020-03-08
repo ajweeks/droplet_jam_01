@@ -7,6 +7,7 @@ onready var projectile_scene = load("res://scenes/projectile.tscn")
 onready var combo_value_text_box := $GUI/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/combo_value as RichTextLabel
 onready var hit_scale_curve := load("res://misc/hit_scale_curve.tres") as Curve
 onready var audio_manager := $Audio as AudioManager
+onready var particles_scene := load("res://scenes/particles.tscn")
 
 var cube_inst
 
@@ -29,12 +30,16 @@ var combo := 0
 var time_since_hit := 0.0
 var time_scale = 4.0
 
+var particles_pool : Array
+
 func _ready():
 	songs.append([])
 	songs[0].append(120) # BPM
-	songs[0].append("x...y...x...y...x...y.x.x.y.x...y...x...y...x..yy.xx.xy.")
-	songs[0].append("r...g...g...g...r...r.g.r.g.r...g...g...g...r..rr.gg.rg.")
+	songs[0].append("x...y...x...y...x...y.x.x.y.x...y.x.x.y.y...x..yy.xx.xy.")
+	songs[0].append("r...g...g...g...r...r.g.r.g.r...g.g.g.r.g...r..rr.gg.rg.")
 	
+	resize_particle_pool(6)
+
 	cube_inst = cube.instance()
 	add_child(cube_inst);
 	
@@ -46,23 +51,6 @@ func _ready():
 	spawn_dirs.append(-Vector3.UP)
 	spawn_dirs.append(Vector3.FORWARD)
 	spawn_dirs.append(-Vector3.FORWARD)
-
-func dirCharToDir(dir_char):
-	match dir_char:
-		'x': return 0;
-		'X': return 1;
-		'y': return 2;
-		'Y': return 3;
-		'z': return 4;
-		'Z': return 5;
-	return -1;
-
-func colorCharToColIdx(color_char):
-	match color_char:
-		'r': return 0;
-		'g': return 1;
-		'b': return 2;
-	return -1;
 
 func _process(delta):
 	elapsed_time_in_song += delta
@@ -98,6 +86,25 @@ func _process(delta):
 			projectiles[i].transform.origin = Vector3(9999,9999,9999)
 			projectiles_used[i] = false
 
+
+func resize_particle_pool(new_size: int):
+	print("Resizing particles pool to " + str(new_size))
+	var old_size := particles_pool.size()
+	assert(new_size > old_size)
+	particles_pool.resize(new_size)
+	for i in range(old_size, new_size):
+		particles_pool[i] = particles_scene.instance()
+		var p := particles_pool[i] as Particles
+		p.emitting = false
+		add_child(p)
+
+func next_particle_system() -> Particles:
+	for i in range(particles_pool.size()):
+		if not particles_pool[i].emitting:
+			return particles_pool[i]
+	resize_particle_pool(int(ceil(particles_pool.size() * 1.5)))
+	return next_particle_system()
+
 func resize_projectiles_array(new_size: int):
 	print("Resizing projectiles array to " + str(new_size))
 	var old_size = projectiles.size()
@@ -111,7 +118,7 @@ func resize_projectiles_array(new_size: int):
 		projectiles[i] = new_projectile
 		projectiles_used[i] = false
 
-func next_projectile_index():
+func next_projectile_index() -> int:
 	for i in range(projectiles_used.size()):
 		if not projectiles_used[i]:
 			return i;
@@ -123,9 +130,35 @@ func next_projectile():
 	projectiles_used[next_index] = true
 	return projectiles[next_index]
 
+func dirCharToDir(dir_char) -> int:
+	match dir_char:
+		'x': return 0;
+		'X': return 1;
+		'y': return 2;
+		'Y': return 3;
+		'z': return 4;
+		'Z': return 5;
+	return -1;
+
+func colorCharToColIdx(color_char) -> int:
+	match color_char:
+		'r': return 0;
+		'g': return 1;
+		'b': return 2;
+	return -1;
+
 func onProjectileHit(projectile, axis: int, index: int):
 	var correct = projectile.color == axis
 	cube_inst.lightFace(axis, index, correct)
+	
+	var p := next_particle_system() as Particles
+	p.restart()
+	var t = p.transform as Transform
+	t.origin = projectile.transform.origin
+	var p_rb := projectile.rb as RigidBody
+	var fwd = p_rb.linear_velocity
+	var up = fwd.cross(Vector3(0.5, 0.5, 0.5)).normalized()
+	p.transform = t.looking_at(fwd, up)
 	
 	if correct:
 		combo += 1

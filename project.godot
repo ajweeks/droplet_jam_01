@@ -130,6 +130,10 @@ rotate_y_neg={
 3d_physics/layer_1="projectiles"
 3d_physics/layer_2="cube"
 
+[memory]
+
+limits/message_queue/max_size_kb=4096
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
