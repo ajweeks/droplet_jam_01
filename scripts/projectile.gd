@@ -1,16 +1,18 @@
 extends Spatial
 
 var move_speed := 3.0
-var color := 0 # 0, 1, 2 => r, g, b
+var color := -1 # 0, 1, 2 => r, g, b
 
-onready var mesh := $projectile_mesh
+onready var mesh := $projectile_mesh as CSGMesh
 onready var game := get_tree().get_current_scene() as main_game
 
-onready var mat_red := load("res://materials/mat_red.tres")
-onready var mat_green := load("res://materials/mat_green.tres")
-onready var mat_blue := load("res://materials/mat_blue.tres")
+var red =   Color("#c02929")
+var green = Color("#258c2c")
+var blue =  Color("#1510b3")
 
 func _ready():
+	mesh.material_override = SpatialMaterial.new()
+	mesh.material_override.roughness = 0.0
 	set_color(0)
 
 func _process(delta):
@@ -23,9 +25,11 @@ func _on_RigidBody_body_entered(body):
 	game.onProjectileHit(self, cube.axis, cube.index)
 
 func set_color(inColor):
+	if color == inColor:
+		return
 	color = inColor
 	match inColor:
-		0: mesh.material = mat_red
-		1: mesh.material = mat_green
-		2: mesh.material = mat_blue
+		0: mesh.material_override.albedo_color = red;
+		1: mesh.material_override.albedo_color = green;
+		2: mesh.material_override.albedo_color = blue;
 		_: printerr("invalid color")

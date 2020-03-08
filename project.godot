@@ -30,6 +30,10 @@ config/name="droplet_jam_01"
 run/main_scene="res://scenes/main_scene.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/vsync/use_vsync=false
+
 [input]
 
 ui_accept={
