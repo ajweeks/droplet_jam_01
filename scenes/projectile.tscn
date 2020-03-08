@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://materials/mat_projectile.tres" type="Material" id=1]
+[ext_resource path="res://materials/mat_red.tres" type="Material" id=1]
 [ext_resource path="res://scripts/projectile.gd" type="Script" id=2]
 
 [sub_resource type="SphereMesh" id=1]
@@ -28,4 +28,3 @@ can_sleep = false
 [node name="projectile_shape" type="CollisionShape" parent="projectile_rb"]
 shape = SubResource( 2 )
 [connection signal="body_entered" from="projectile_rb" to="." method="_on_RigidBody_body_entered"]
-[connection signal="body_shape_entered" from="projectile_rb" to="." method="_on_RigidBody_body_shape_entered"]
