@@ -7,6 +7,7 @@ onready var scratch = $scratch as AudioStreamPlayer
 onready var hihat = $hihat as AudioStreamPlayer
 onready var rewind = $rewind as AudioStreamPlayer
 onready var clap = $clap as AudioStreamPlayer
+onready var snare = $snare as AudioStreamPlayer
 
 func internal_play(sound: AudioStreamPlayer):
 	sound.play()
@@ -18,4 +19,5 @@ func play(sound: String):
 		"hihat": internal_play(hihat);
 		"rewind": internal_play(rewind);
 		"clap": internal_play(clap);
+		"snare": internal_play(snare);
 		_: printerr("invalid sound: " + sound)

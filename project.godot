@@ -38,6 +38,9 @@ config/icon="res://icon.png"
 
 [display]
 
+window/size/width=768
+window/size/height=768
+window/dpi/allow_hidpi=true
 window/vsync/use_vsync=false
 
 [input]
@@ -122,6 +125,11 @@ rotate_y_pos={
 rotate_y_neg={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
+ ]
+}
+restart={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"unicode":0,"echo":false,"script":null)
  ]
 }
 

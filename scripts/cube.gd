@@ -18,7 +18,7 @@ var hit_blink_duration = 0.3
 func _ready():
 	face_timers.resize(6)
 	face_misses.resize(6)
-	for i in range(6):
+	for i in range(face_timers.size()):
 		face_timers[i] = -1.0
 		face_misses[i] = false
 	
@@ -39,7 +39,7 @@ func _process(delta):
 		if not rotations_queue.empty():
 			target_rot = rotations_queue.pop_front() * transform.basis.get_rotation_quat();
 	
-	for i in range(6):
+	for i in range(face_timers.size()):
 		var mesh := get_child(i) as CSGMesh
 		var mat := mesh.material_override as SpatialMaterial
 		if face_timers[i] != -1.0:
@@ -52,7 +52,6 @@ func _process(delta):
 			if face_timers[i] <= 0.0:
 				face_timers[i] = -1.0
 				mat.emission_energy = 0.0;
-
 
 func _input(event):
 	if event.is_action_pressed("rotate_x_pos"):
@@ -67,6 +66,17 @@ func _input(event):
 		rotate(Vector3.FORWARD, -1.0);
 	if event.is_action_pressed("rotate_z_neg"):
 		rotate(Vector3.FORWARD, 1.0);
+
+func reset():
+	transform = Transform.IDENTITY
+	target_rot = Quat.IDENTITY
+	
+	for i in range(face_timers.size()):
+		face_timers[i] = -1.0
+		face_misses[i] = false
+		var mesh := get_child(i) as CSGMesh
+		var mat := mesh.material_override as SpatialMaterial
+		mat.emission_energy = 0.0;
 
 func at_zero():
 	var axis_rotations : Vector3 = transform.basis.get_euler()
