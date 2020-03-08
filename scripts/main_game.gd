@@ -25,8 +25,8 @@ var elapsed_time_in_song := 0.0
 func _ready():
 	songs.append([])
 	songs[0].append(120) # BPM
-	songs[0].append("x...Y...x...Y...")
-	songs[0].append("r...g...b...r...")
+	songs[0].append("x...Y...x...Y...x...y.x.x.y.")
+	songs[0].append("r...g...g...g...r...r.g.r.g.")
 	
 	cube_inst = cube.instance()
 	add_child(cube_inst);
@@ -38,6 +38,7 @@ func _ready():
 	spawn_dirs.append(Vector3.UP)
 	spawn_dirs.append(-Vector3.UP)
 	spawn_dirs.append(Vector3.FORWARD)
+	spawn_dirs.append(-Vector3.FORWARD)
 
 func dirCharToDir(dir_char):
 	match dir_char:
@@ -65,11 +66,10 @@ func _process(delta):
 	beat_index = int(elapsed_time_in_song / secPerBeat)
 	
 	if p_beat_index != beat_index and beat_index < songs[song_index][1].length():
-		print(beat_index)
-		var new_projectile = next_projectile()
 		var dirs : String = songs[song_index][1]
 		var dir_char := dirs[beat_index]
 		if dir_char != '.':
+			var new_projectile = next_projectile()
 			var dir = dirCharToDir(dir_char)
 			var colors : String = songs[song_index][2]
 			var color = colorCharToColIdx(colors[beat_index])
@@ -79,7 +79,7 @@ func _process(delta):
 			new_projectile.set_color(color)
 	
 	for i in range(projectiles.size()):
-		if projectiles[i].transform.origin.distance_squared_to(center) < 0.1:
+		if projectiles_used[i] and projectiles[i].transform.origin.distance_squared_to(center) < 0.1:
 			projectiles[i].transform.origin = Vector3(9999,9999,9999)
 			projectiles_used[i] = false
 
@@ -98,7 +98,7 @@ func resize_projectiles_array(new_size: int):
 
 func next_projectile_index():
 	for i in range(projectiles_used.size()):
-		if !projectiles_used[i]:
+		if not projectiles_used[i]:
 			return i;
 	resize_projectiles_array(int(ceil(projectiles.size() * 1.5)))
 	return next_projectile_index()
@@ -109,5 +109,4 @@ func next_projectile():
 	return projectiles[next_index]
 
 func onProjectileHit(axis: int, index: int):
-	print("projectile hit axis " + str(axis) + " and index " + str(index))
 	cube_inst.lightFace(axis, index)
