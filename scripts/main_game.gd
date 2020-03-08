@@ -4,10 +4,12 @@ class_name main_game
 
 onready var cube = load("res://scenes/cube.tscn")
 onready var projectile = load("res://scenes/projectile.tscn")
+onready var combo_value_text_box := $GUI/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/combo_value as RichTextLabel
+onready var hit_scale_curve := load("res://misc/hit_scale_curve.tres") as Curve
 
 var cube_inst
 
-var spawn_dist := 4.0
+var spawn_dist := 6.0
 
 var projectiles : Array
 var projectiles_used : Array
@@ -22,11 +24,15 @@ var song_index := 0
 var beat_index := -1
 var elapsed_time_in_song := 0.0
 
+var combo := 0
+var time_since_hit := 0.0
+var time_scale = 4.0
+
 func _ready():
 	songs.append([])
 	songs[0].append(120) # BPM
-	songs[0].append("x...Y...x...Y...x...y.x.x.y.")
-	songs[0].append("r...g...g...g...r...r.g.r.g.")
+	songs[0].append("x...y...x...y...x...y.x.x.y.x...y...x...y...x..yy.xx.xy.")
+	songs[0].append("r...g...g...g...r...r.g.r.g.r...g...g...g...r..rr.gg.rg.")
 	
 	cube_inst = cube.instance()
 	add_child(cube_inst);
@@ -59,6 +65,14 @@ func colorCharToColIdx(color_char):
 
 func _process(delta):
 	elapsed_time_in_song += delta
+	var p_time_since_hit = time_since_hit
+	time_since_hit += delta*time_scale
+	
+	if time_since_hit >= 1.0 and p_time_since_hit < 1.0:
+		combo_value_text_box.rect_scale = Vector2(1.0, 1.0);
+	elif time_since_hit < 1.0:
+		var scale = hit_scale_curve.interpolate(time_since_hit)
+		combo_value_text_box.rect_scale = Vector2(scale, scale);
 	
 	var secPerBeat := (int(songs[song_index][0]) / 8.0 / 60.0) # BPM / 8 notes/beat / 60s/min
 	
@@ -111,3 +125,11 @@ func next_projectile():
 func onProjectileHit(projectile, axis: int, index: int):
 	var correct = projectile.color == axis
 	cube_inst.lightFace(axis, index, correct)
+	
+	if correct:
+		combo += 1
+	else:
+		combo = 0
+	
+	combo_value_text_box.text = str(combo) + 'x'
+	time_since_hit = 0.0

@@ -8,7 +8,7 @@ var rotations_queue : Array
 var face_timers : Array
 var face_misses : Array
 
-var zero_rot_thresh = 0.1
+var zero_rot_thresh = 0.01
 var fade_speed = 10.0
 var blink_brightness = 1.0
 var miss_blink_speed = 10.0

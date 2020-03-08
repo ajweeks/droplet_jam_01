@@ -1,6 +1,6 @@
 extends Spatial
 
-var move_speed := 2.0
+var move_speed := 3.0
 var color := 0 # 0, 1, 2 => r, g, b
 
 onready var mesh := $projectile_mesh
