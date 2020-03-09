@@ -32,16 +32,23 @@ var highest_combo := 0
 var hit_count := 0
 var note_count := 0
 
-var time_since_hit := 0.0
+var time_since_hit := INF
 var time_scale = 4.0
 
 var particles_pool : Array
 
 func _ready():
 	songs.append([])
-	songs[0].append(110) # BPM
-	songs[0].append("x...x...x...x...x...y.x.x.y.x...y.x.x.y.y...x..yy.xx.xy.")
-	songs[0].append("b...r...g...r...b...r.g.r.g.r...g.g.g.r.g...r..rr.gg.rg.")
+	songs[0].append(120) # BPM
+	songs[0].append(0.69) # offset
+	songs[0].append("x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.xyxyxyx.x.x.x.x.xyxyxyxyx.x.x.")
+	songs[0].append("b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.brbrbrb.b.b.b.b.brbrbrbrb.b.b.")
+	
+	songs.append([])
+	songs[1].append(110) # BPM
+	songs[1].append(0.0) # offset
+	songs[1].append("x...x...x...x...x...y.x.x.y.x...y.x.x.y.y...x..yy.xx.xy.")
+	songs[1].append("b...r...g...r...b...r.g.r.g.r...g.g.g.r.g...r..rr.gg.rg.")
 	
 	resize_particle_pool(6)
 
@@ -59,6 +66,22 @@ func _ready():
 
 	update_combo_text()
 	update_percentage_text()
+	
+	var thread = Thread.new()
+	thread.start(self, "start_song")	
+
+func start_song(userdata):
+	var t = Timer.new()
+	t.set_wait_time(songs[song_index][1])
+	t.set_one_shot(true)
+	self.add_child(t)
+	t.start()
+	
+	yield(t, "timeout")
+	
+	audio_manager.play_song("house_01")
+	
+	t.queue_free()
 
 func _process(delta):
 	elapsed_time_in_song += delta
@@ -71,18 +94,18 @@ func _process(delta):
 		var scale = hit_scale_curve.interpolate(time_since_hit)
 		combo_value_text_box.rect_scale = Vector2(scale, scale);
 	
-	var secPerBeat := (int(songs[song_index][0]) / 8.0 / 60.0) # BPM / 8 notes/beat / 60s/min
+	var secPerBeat := (float(songs[song_index][0]) / 8.0 / 60.0) # BPM / 8 notes/beat / 60s/min
 	
 	var p_beat_index := beat_index
 	beat_index = int(elapsed_time_in_song / secPerBeat)
 	
-	if p_beat_index != beat_index and beat_index < songs[song_index][1].length():
-		var dirs : String = songs[song_index][1]
+	if p_beat_index != beat_index and beat_index < songs[song_index][2].length():
+		var dirs : String = songs[song_index][2]
 		var dir_char := dirs[beat_index]
 		if dir_char != '.':
 			var new_projectile = next_projectile()
 			var dir = dirCharToDir(dir_char)
-			var colors : String = songs[song_index][2]
+			var colors : String = songs[song_index][3]
 			var color = colorCharToColIdx(colors[beat_index])
 			assert(color != -1)
 			assert(dir != -1)
@@ -100,7 +123,7 @@ func _input(event):
 
 func restart():
 	combo = 0
-	beat_index = 0
+	beat_index = -1
 	time_since_hit = 0.0
 	elapsed_time_in_song = 0.0
 	hit_count = 0

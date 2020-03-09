@@ -9,6 +9,8 @@ onready var rewind = $rewind as AudioStreamPlayer
 onready var clap = $clap as AudioStreamPlayer
 onready var snare = $snare as AudioStreamPlayer
 
+onready var house_01 = $house_01 as AudioStreamPlayer
+
 func internal_play(sound: AudioStreamPlayer):
 	sound.play()
 
@@ -21,3 +23,8 @@ func play(sound: String):
 		"clap": internal_play(clap);
 		"snare": internal_play(snare);
 		_: printerr("invalid sound: " + sound)
+
+func play_song(song: String):
+	match song:
+		"house_01": internal_play(house_01)
+		_: printerr("invalid song: " + song)

@@ -6,7 +6,7 @@
 [sub_resource type="QuadMesh" id=1]
 
 [sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.713726, 0.137255, 0.137255, 1 )
+albedo_color = Color( 0.631373, 0.254902, 0.913725, 1 )
 emission_enabled = true
 emission = Color( 1, 1, 1, 1 )
 emission_energy = 0.0
@@ -16,11 +16,11 @@ emission_on_uv2 = false
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 0.4, 0.15, 0.4 )
 
-[sub_resource type="SpatialMaterial" id=5]
-albedo_color = Color( 0.113725, 0.733333, 0.282353, 1 )
-
 [sub_resource type="SpatialMaterial" id=4]
-albedo_color = Color( 0.196078, 0.2, 0.443137, 1 )
+albedo_color = Color( 0.815686, 0.866667, 0.211765, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.0980392, 0.764706, 0.87451, 1 )
 
 [node name="Cube" type="Spatial"]
 script = ExtResource( 1 )
@@ -67,7 +67,7 @@ shape = SubResource( 3 )
 [node name="plane_y_0" type="CSGMesh" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.5, -2.18557e-08 )
 mesh = SubResource( 1 )
-material = SubResource( 5 )
+material = SubResource( 4 )
 
 [node name="plane_y0_rb" type="RigidBody" parent="plane_y_0"]
 transform = Transform( 1.91069e-15, 1, -4.37114e-08, -1, 1.91069e-15, 0, 0, 4.37114e-08, 1, -2.98023e-08, -2.18557e-08, 0 )
@@ -87,7 +87,7 @@ shape = SubResource( 3 )
 [node name="plane_y_1" type="CSGMesh" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, -8.74228e-08, -4.37114e-08, 1, -3.82137e-15, 1, 4.37114e-08, 0, 0.5, 2.18557e-08 )
 mesh = SubResource( 1 )
-material = SubResource( 5 )
+material = SubResource( 4 )
 
 [node name="plane_y1_rb" type="RigidBody" parent="plane_y_1"]
 transform = Transform( 1.33748e-14, -1, -1.31134e-07, 1, 1.91069e-15, 8.74226e-08, -8.74226e-08, -1.31134e-07, 1, -2.98023e-08, 2.18557e-08, 0 )
@@ -108,7 +108,7 @@ shape = SubResource( 3 )
 [node name="plane_z_0" type="CSGMesh" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5 )
 mesh = SubResource( 1 )
-material = SubResource( 4 )
+material = SubResource( 5 )
 
 [node name="plane_z0_rb" type="RigidBody" parent="plane_z_0"]
 transform = Transform( 1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 0, 4.73656e-16, -5.96046e-08 )
@@ -122,13 +122,13 @@ script = ExtResource( 2 )
 axis = 2
 
 [node name="plane_z0_c" type="CollisionShape" parent="plane_z_0/plane_z0_rb"]
-transform = Transform( 1, -4.37114e-08, 4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 4.37114e-08, 1, -4.37114e-08, 0, 0, -0.15 )
+transform = Transform( 1, -4.37114e-08, 4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 4.37114e-08, 1, -4.37114e-08, 1.27055e-21, 0, -0.15 )
 shape = SubResource( 3 )
 
 [node name="plane_z_1" type="CSGMesh" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.5 )
 mesh = SubResource( 1 )
-material = SubResource( 4 )
+material = SubResource( 5 )
 
 [node name="plane_z1_rb" type="RigidBody" parent="plane_z_1"]
 transform = Transform( 1, 0, -1.84741e-13, 0, 1, 0, 1.84741e-13, 0, 1, 3.55271e-15, 0, -5.96046e-08 )

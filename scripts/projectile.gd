@@ -1,15 +1,15 @@
 extends Spatial
 
-var move_speed := 3.0
+var move_speed := 3.2
 var color := -1 # 0, 1, 2 => r, g, b
 
 onready var mesh := $projectile_mesh as CSGMesh
 onready var game := get_tree().get_current_scene()
 onready var rb = $projectile_rb as RigidBody
 
-var red =   Color("#c02929")
-var green = Color("#258c2c")
-var blue =  Color("#1510b3")
+var red =   Color("#a141e9")  # magenta
+var green = Color("#d0dd36")  # yellow
+var blue =  Color("#19c3df")  # turq
 
 func _ready():
 	mesh.material_override = SpatialMaterial.new()

@@ -12,8 +12,8 @@ var zero_rot_thresh = 0.01
 var fade_speed = 10.0
 var blink_brightness = 1.0
 var miss_blink_speed = 10.0
-var miss_blink_duration = 0.6
-var hit_blink_duration = 0.3
+var miss_blink_duration = 0.3
+var hit_blink_duration = 0.15
 
 func _ready():
 	face_timers.resize(6)

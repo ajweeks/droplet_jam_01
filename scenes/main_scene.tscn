@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scripts/main_game.gd" type="Script" id=1]
 [ext_resource path="res://misc/main_theme.tres" type="Theme" id=2]
@@ -9,20 +9,19 @@
 [ext_resource path="res://sfx/clap_01.wav" type="AudioStream" id=7]
 [ext_resource path="res://scripts/AudioManager.gd" type="Script" id=8]
 [ext_resource path="res://sfx/snare_01.wav" type="AudioStream" id=9]
+[ext_resource path="res://music/bensound-house.wav" type="AudioStream" id=10]
 
 [sub_resource type="ProceduralSky" id=1]
-sky_top_color = Color( 0.407843, 0.447059, 0.509804, 1 )
-sky_horizon_color = Color( 0.101961, 0.101961, 0.14902, 1 )
-sky_curve = 0.292411
-sky_energy = 2.0
-ground_bottom_color = Color( 0.101961, 0.0980392, 0.141176, 1 )
-ground_horizon_color = Color( 0.156863, 0.160784, 0.247059, 1 )
-ground_curve = 0.190273
-sun_color = Color( 0.898039, 0.807843, 0.666667, 1 )
+sky_top_color = Color( 0.188235, 0.188235, 0.254902, 1 )
+sky_horizon_color = Color( 0.101961, 0.0980392, 0.141176, 1 )
+sky_curve = 1.54335
+ground_bottom_color = Color( 0.0901961, 0.0901961, 0.109804, 1 )
+ground_horizon_color = Color( 0.101961, 0.0980392, 0.141176, 1 )
+ground_curve = 0.0918958
 sun_latitude = 32.48
+sun_longitude = 131.29
 sun_angle_max = 40.71
 sun_curve = 0.00625
-sun_energy = 6.27
 
 [sub_resource type="Environment" id=2]
 background_mode = 2
@@ -133,3 +132,6 @@ stream = ExtResource( 7 )
 
 [node name="snare" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource( 9 )
+
+[node name="house_01" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 10 )

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bensound-erf.wav-9835311aa9ea4c1c16f6feacca1c2d21.sample"
+
+[deps]
+
+source_file="res://music/bensound-erf.wav"
+dest_files=[ "res://.import/bensound-erf.wav-9835311aa9ea4c1c16f6feacca1c2d21.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
